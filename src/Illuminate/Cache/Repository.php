@@ -88,7 +88,7 @@ class Repository implements ArrayAccess, CacheContract
      * @param  mixed  $default
      * @return mixed
      */
-    public function get($key, $default = null): mixed
+    public function get($key, $default = null)
     {
         if (is_array($key)) {
             return $this->many($key);
@@ -583,7 +583,7 @@ class Repository implements ArrayAccess, CacheContract
      */
     protected function event($event)
     {
-        $this->events?->dispatch($event);
+        ($events = $this->events) ? $events->dispatch($event) : null;
     }
 
     /**
@@ -624,7 +624,8 @@ class Repository implements ArrayAccess, CacheContract
      * @param  string  $key
      * @return mixed
      */
-    public function offsetGet($key): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($key)
     {
         return $this->get($key);
     }

@@ -283,7 +283,7 @@ class UrlGenerator implements UrlGeneratorContract
     {
         $i = 'index.php';
 
-        return str_contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
+        return strpos($root, $i) !== false ? str_replace('/'.$i, '', $root) : $root;
     }
 
     /**
@@ -507,7 +507,7 @@ class UrlGenerator implements UrlGeneratorContract
             $action = '\\'.implode('@', $action);
         }
 
-        if ($this->rootNamespace && ! str_starts_with($action, '\\')) {
+        if ($this->rootNamespace && strncmp($action, '\\', strlen('\\')) !== 0) {
             return $this->rootNamespace.'\\'.$action;
         } else {
             return trim($action, '\\');
@@ -568,7 +568,7 @@ class UrlGenerator implements UrlGeneratorContract
             $root = $this->cachedRoot;
         }
 
-        $start = str_starts_with($root, 'http://') ? 'http://' : 'https://';
+        $start = strncmp($root, 'http://', strlen('http://')) === 0 ? 'http://' : 'https://';
 
         return preg_replace('~'.$start.'~', $scheme, $root, 1);
     }

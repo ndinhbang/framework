@@ -160,7 +160,7 @@ class LogManager implements LoggerInterface
      */
     protected function parseTap($tap)
     {
-        return str_contains($tap, ':') ? explode(':', $tap, 2) : [$tap, ''];
+        return strpos($tap, ':') !== false ? explode(':', $tap, 2) : [$tap, ''];
     }
 
     /**

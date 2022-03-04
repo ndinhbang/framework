@@ -21,11 +21,11 @@ class Mix
     {
         static $manifests = [];
 
-        if (! str_starts_with($path, '/')) {
+        if (strncmp($path, '/', strlen('/')) !== 0) {
             $path = "/{$path}";
         }
 
-        if ($manifestDirectory && ! str_starts_with($manifestDirectory, '/')) {
+        if ($manifestDirectory && strncmp($manifestDirectory, '/', strlen('/')) !== 0) {
             $manifestDirectory = "/{$manifestDirectory}";
         }
 

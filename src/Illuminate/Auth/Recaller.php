@@ -69,7 +69,7 @@ class Recaller
      */
     protected function properString()
     {
-        return is_string($this->recaller) && str_contains($this->recaller, '|');
+        return is_string($this->recaller) && strpos($this->recaller, '|') !== false;
     }
 
     /**

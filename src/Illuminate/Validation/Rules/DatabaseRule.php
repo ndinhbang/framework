@@ -58,14 +58,14 @@ trait DatabaseRule
      */
     public function resolveTableName($table)
     {
-        if (! str_contains($table, '\\') || ! class_exists($table)) {
+        if (strpos($table, '\\') === false || ! class_exists($table)) {
             return $table;
         }
 
         if (is_subclass_of($table, Model::class)) {
-            $model = new $table;
+            $model = new $table();
 
-            if (str_contains($model->getTable(), '.')) {
+            if (strpos($model->getTable(), '.') !== false) {
                 return $table;
             }
 

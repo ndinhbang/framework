@@ -65,7 +65,7 @@ class AblyBroadcaster extends Broadcaster
      */
     public function validAuthenticationResponse($request, $result)
     {
-        if (str_starts_with($request->channel_name, 'private')) {
+        if (strncmp($request->channel_name, 'private', strlen('private')) === 0) {
             $signature = $this->generateAblySignature(
                 $request->channel_name, $request->socket_id
             );
@@ -109,7 +109,7 @@ class AblyBroadcaster extends Broadcaster
         return hash_hmac(
             'sha256',
             sprintf('%s:%s%s', $socketId, $channelName, $userData ? ':'.json_encode($userData) : ''),
-            $this->getPrivateToken(),
+            $this->getPrivateToken()
         );
     }
 
@@ -174,7 +174,7 @@ class AblyBroadcaster extends Broadcaster
     public function normalizeChannelName($channel)
     {
         if ($this->isGuardedChannel($channel)) {
-            return str_starts_with($channel, 'private-')
+            return strncmp($channel, 'private-', strlen('private-')) === 0
                         ? Str::replaceFirst('private-', '', $channel)
                         : Str::replaceFirst('presence-', '', $channel);
         }
@@ -194,7 +194,7 @@ class AblyBroadcaster extends Broadcaster
             $channel = (string) $channel;
 
             if (Str::startsWith($channel, ['private-', 'presence-'])) {
-                return str_starts_with($channel, 'private-')
+                return strncmp($channel, 'private-', strlen('private-')) === 0
                     ? Str::replaceFirst('private-', 'private:', $channel)
                     : Str::replaceFirst('presence-', 'presence:', $channel);
             }

@@ -47,7 +47,7 @@ class PostgresGrammar extends Grammar
         return sprintf(
             'create database %s encoding %s',
             $this->wrapValue($name),
-            $this->wrapValue($connection->getConfig('charset')),
+            $this->wrapValue($connection->getConfig('charset'))
         );
     }
 

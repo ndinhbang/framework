@@ -122,7 +122,7 @@ class Schedule
             $command = Container::getInstance()->make($command);
 
             return $this->exec(
-                Application::formatCommandString($command->getName()), $parameters,
+                Application::formatCommandString($command->getName()), $parameters
             )->description($command->getDescription());
         }
 
@@ -271,11 +271,11 @@ class Schedule
             return ProcessUtils::escapeArgument($value);
         });
 
-        if (str_starts_with($key, '--')) {
+        if (strncmp($key, '--', strlen('--')) === 0) {
             $value = $value->map(function ($value) use ($key) {
                 return "{$key}={$value}";
             });
-        } elseif (str_starts_with($key, '-')) {
+        } elseif (strncmp($key, '-', strlen('-')) === 0) {
             $value = $value->map(function ($value) use ($key) {
                 return "{$key} {$value}";
             });

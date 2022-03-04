@@ -654,7 +654,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
     {
         $providers = Collection::make($this->make('config')->get('app.providers'))
                         ->partition(function ($provider) {
-                            return str_starts_with($provider, 'Illuminate\\');
+                            return strncmp($provider, 'Illuminate\\', strlen('Illuminate\\')) === 0;
                         });
 
         $providers->splice(1, 0, [$this->make(PackageManifest::class)->providers()]);

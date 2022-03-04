@@ -106,16 +106,19 @@ class SymfonySessionDecorator implements SessionInterface
 
     /**
      * {@inheritdoc}
+     * @param mixed $default
+     * @return mixed
      */
-    public function get(string $name, mixed $default = null): mixed
+    public function get(string $name, $default = null)
     {
         return $this->store->get($name, $default);
     }
 
     /**
      * {@inheritdoc}
+     * @param mixed $value
      */
-    public function set(string $name, mixed $value)
+    public function set(string $name, $value)
     {
         $this->store->put($name, $value);
     }
@@ -138,8 +141,9 @@ class SymfonySessionDecorator implements SessionInterface
 
     /**
      * {@inheritdoc}
+     * @return mixed
      */
-    public function remove(string $name): mixed
+    public function remove(string $name)
     {
         return $this->store->remove($name);
     }

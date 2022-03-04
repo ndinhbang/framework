@@ -735,7 +735,7 @@ trait EnumeratesValues
             function ($carry, $callback) {
                 return $callback($carry);
             },
-            $this,
+            $this
         );
     }
 

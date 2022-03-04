@@ -62,7 +62,7 @@ class PusherBroadcaster extends Broadcaster
      */
     public function validAuthenticationResponse($request, $result)
     {
-        if (str_starts_with($request->channel_name, 'private')) {
+        if (strncmp($request->channel_name, 'private', strlen('private')) === 0) {
             return $this->decodePusherResponse(
                 $request, $this->pusher->socket_auth($request->channel_name, $request->socket_id)
             );

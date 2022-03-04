@@ -30,7 +30,7 @@ trait QueriesRelationships
     public function has($relation, $operator = '>=', $count = 1, $boolean = 'and', Closure $callback = null)
     {
         if (is_string($relation)) {
-            if (str_contains($relation, '.')) {
+            if (strpos($relation, '.') !== false) {
                 return $this->hasNested($relation, $operator, $count, $boolean, $callback);
             }
 
@@ -488,7 +488,7 @@ trait QueriesRelationships
             $relationship->getQualifiedForeignKeyName(),
             '=',
             $related->getAttributeValue($relationship->getOwnerKeyName()),
-            $boolean,
+            $boolean
         );
 
         return $this;

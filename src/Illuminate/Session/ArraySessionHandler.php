@@ -59,7 +59,7 @@ class ArraySessionHandler implements SessionHandlerInterface
      *
      * @return string|false
      */
-    public function read($sessionId): string|false
+    public function read($sessionId)
     {
         if (! isset($this->storage[$sessionId])) {
             return '';

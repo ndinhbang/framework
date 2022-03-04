@@ -106,7 +106,7 @@ class DatabasePresenceVerifier implements DatabasePresenceVerifierInterface
             $query->whereNull($key);
         } elseif ($extraValue === 'NOT_NULL') {
             $query->whereNotNull($key);
-        } elseif (str_starts_with($extraValue, '!')) {
+        } elseif (strncmp($extraValue, '!', strlen('!')) === 0) {
             $query->where($key, '!=', mb_substr($extraValue, 1));
         } else {
             $query->where($key, $extraValue);

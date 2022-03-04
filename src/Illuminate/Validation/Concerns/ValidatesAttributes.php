@@ -916,15 +916,15 @@ trait ValidatesAttributes
      */
     public function parseTable($table)
     {
-        [$connection, $table] = str_contains($table, '.') ? explode('.', $table, 2) : [null, $table];
+        [$connection, $table] = strpos($table, '.') !== false ? explode('.', $table, 2) : [null, $table];
 
-        if (str_contains($table, '\\') && class_exists($table) && is_a($table, Model::class, true)) {
-            $model = new $table;
+        if (strpos($table, '\\') !== false && class_exists($table) && is_a($table, Model::class, true)) {
+            $model = new $table();
 
             $table = $model->getTable();
             $connection ??= $model->getConnectionName();
 
-            if (str_contains($table, '.') && Str::startsWith($table, $connection)) {
+            if (strpos($table, '.') !== false && Str::startsWith($table, $connection)) {
                 $connection = null;
             }
 
@@ -2072,14 +2072,20 @@ trait ValidatesAttributes
      */
     protected function compare($first, $second, $operator)
     {
-        return match ($operator) {
-            '<' => $first < $second,
-            '>' => $first > $second,
-            '<=' => $first <= $second,
-            '>=' => $first >= $second,
-            '=' => $first == $second,
-            default => throw new InvalidArgumentException,
-        };
+        switch ($operator) {
+            case '<':
+                return $first < $second;
+            case '>':
+                return $first > $second;
+            case '<=':
+                return $first <= $second;
+            case '>=':
+                return $first >= $second;
+            case '=':
+                return $first == $second;
+            default:
+                throw new InvalidArgumentException;
+        }
     }
 
     /**

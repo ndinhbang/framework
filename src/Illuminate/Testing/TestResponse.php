@@ -276,7 +276,7 @@ EOF;
     {
         PHPUnit::assertTrue(
             $this->isRedirect(),
-            $this->statusMessageWithDetails('201, 301, 302, 303, 307, 308', $this->getStatusCode()),
+            $this->statusMessageWithDetails('201, 301, 302, 303, 307, 308', $this->getStatusCode())
         );
 
         if (! is_null($uri)) {
@@ -296,7 +296,7 @@ EOF;
     {
         PHPUnit::assertTrue(
             $this->isRedirect(),
-            $this->statusMessageWithDetails('201, 301, 302, 303, 307, 308', $this->getStatusCode()),
+            $this->statusMessageWithDetails('201, 301, 302, 303, 307, 308', $this->getStatusCode())
         );
 
         PHPUnit::assertTrue(
@@ -321,7 +321,7 @@ EOF;
 
         PHPUnit::assertTrue(
             $this->isRedirect(),
-            $this->statusMessageWithDetails('201, 301, 302, 303, 307, 308', $this->getStatusCode()),
+            $this->statusMessageWithDetails('201, 301, 302, 303, 307, 308', $this->getStatusCode())
         );
 
         $request = Request::create($this->headers->get('Location'));
@@ -1579,7 +1579,8 @@ EOF;
      * @param  string  $offset
      * @return mixed
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->responseHasView()
                     ? $this->viewData($offset)

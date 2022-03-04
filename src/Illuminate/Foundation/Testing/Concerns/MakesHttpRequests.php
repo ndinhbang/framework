@@ -526,7 +526,7 @@ trait MakesHttpRequests
      */
     protected function prepareUrlForRequest($uri)
     {
-        if (str_starts_with($uri, '/')) {
+        if (strncmp($uri, '/', strlen('/')) === 0) {
             $uri = substr($uri, 1);
         }
 
@@ -556,7 +556,7 @@ trait MakesHttpRequests
      */
     protected function formatServerHeaderKey($name)
     {
-        if (! str_starts_with($name, 'HTTP_') && $name !== 'CONTENT_TYPE' && $name !== 'REMOTE_ADDR') {
+        if (strncmp($name, 'HTTP_', strlen('HTTP_')) !== 0 && $name !== 'CONTENT_TYPE' && $name !== 'REMOTE_ADDR') {
             return 'HTTP_'.$name;
         }
 

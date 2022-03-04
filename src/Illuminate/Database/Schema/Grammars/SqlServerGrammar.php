@@ -39,7 +39,7 @@ class SqlServerGrammar extends Grammar
     {
         return sprintf(
             'create database %s',
-            $this->wrapValue($name),
+            $this->wrapValue($name)
         );
     }
 

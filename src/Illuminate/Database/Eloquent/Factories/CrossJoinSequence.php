@@ -18,7 +18,7 @@ class CrossJoinSequence extends Sequence
             function ($a) {
                 return array_merge(...$a);
             },
-            Arr::crossJoin(...$sequences),
+            Arr::crossJoin(...$sequences)
         );
 
         parent::__construct(...$crossJoined);

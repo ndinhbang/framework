@@ -79,7 +79,8 @@ class Optional implements ArrayAccess
      * @param  mixed  $key
      * @return mixed
      */
-    public function offsetGet($key): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($key)
     {
         return Arr::get($this->value, $key);
     }

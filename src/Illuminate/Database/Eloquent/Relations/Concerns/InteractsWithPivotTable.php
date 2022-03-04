@@ -392,7 +392,7 @@ trait InteractsWithPivotTable
         $fresh = $this->parent->freshTimestamp();
 
         if ($this->using) {
-            $pivotModel = new $this->using;
+            $pivotModel = new $this->using();
 
             $fresh = $fresh->format($pivotModel->getDateFormat());
         }
@@ -669,11 +669,18 @@ trait InteractsWithPivotTable
      */
     protected function getTypeSwapValue($type, $value)
     {
-        return match (strtolower($type)) {
-            'int', 'integer' => (int) $value,
-            'real', 'float', 'double' => (float) $value,
-            'string' => (string) $value,
-            default => $value,
-        };
+        switch (strtolower($type)) {
+            case 'int':
+            case 'integer':
+                return (int) $value;
+            case 'real':
+            case 'float':
+            case 'double':
+                return (float) $value;
+            case 'string':
+                return (string) $value;
+            default:
+                return $value;
+        }
     }
 }

@@ -864,8 +864,8 @@ trait HasAttributes
      */
     protected function isCustomDateTimeCast($cast)
     {
-        return str_starts_with($cast, 'date:') ||
-                str_starts_with($cast, 'datetime:');
+        return strncmp($cast, 'date:', strlen('date:')) === 0 ||
+                strncmp($cast, 'datetime:', strlen('datetime:')) === 0;
     }
 
     /**
@@ -888,7 +888,7 @@ trait HasAttributes
      */
     protected function isDecimalCast($cast)
     {
-        return str_starts_with($cast, 'decimal:');
+        return strncmp($cast, 'decimal:', strlen('decimal:')) === 0;
     }
 
     /**
@@ -935,7 +935,7 @@ trait HasAttributes
         // If this attribute contains a JSON ->, we'll set the proper value in the
         // attribute's underlying array. This takes care of properly nesting an
         // attribute in the array's value in the case of deeply nested items.
-        if (str_contains($key, '->')) {
+        if (strpos($key, '->') !== false) {
             return $this->fillJsonAttribute($key, $value);
         }
 
@@ -1224,12 +1224,16 @@ trait HasAttributes
      */
     public function fromFloat($value)
     {
-        return match ((string) $value) {
-            'Infinity' => INF,
-            '-Infinity' => -INF,
-            'NaN' => NAN,
-            default => (float) $value,
-        };
+        switch ((string) $value) {
+            case 'Infinity':
+                return INF;
+            case '-Infinity':
+                return -INF;
+            case 'NaN':
+                return NAN;
+            default:
+                return (float) $value;
+        }
     }
 
     /**
@@ -1563,7 +1567,7 @@ trait HasAttributes
 
         $arguments = [];
 
-        if (is_string($castType) && str_contains($castType, ':')) {
+        if (is_string($castType) && strpos($castType, ':') !== false) {
             $segments = explode(':', $castType, 2);
 
             $castType = $segments[0];
@@ -1589,7 +1593,7 @@ trait HasAttributes
      */
     protected function parseCasterClass($class)
     {
-        return ! str_contains($class, ':')
+        return strpos($class, ':') === false
             ? $class
             : explode(':', $class, 2)[0];
     }
@@ -2091,7 +2095,7 @@ trait HasAttributes
      */
     protected static function getAttributeMarkedMutatorMethods($class)
     {
-        $instance = is_object($class) ? $class : new $class;
+        $instance = is_object($class) ? $class : new $class();
 
         return collect((new ReflectionClass($instance))->getMethods())->filter(function ($method) use ($instance) {
             $returnType = $method->getReturnType();

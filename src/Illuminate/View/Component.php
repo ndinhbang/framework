@@ -222,7 +222,7 @@ abstract class Component
      */
     protected function shouldIgnore($name)
     {
-        return str_starts_with($name, '__') ||
+        return strncmp($name, '__', strlen('__')) === 0 ||
                in_array($name, $this->ignoredMethods());
     }
 

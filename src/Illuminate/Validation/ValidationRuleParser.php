@@ -63,7 +63,7 @@ class ValidationRuleParser
     protected function explodeRules($rules)
     {
         foreach ($rules as $key => $rule) {
-            if (str_contains($key, '*')) {
+            if (strpos($key, '*') !== false) {
                 $rules = $this->explodeWildcardRules($rules, $key, [$rule]);
 
                 unset($rules[$key]);
@@ -258,7 +258,7 @@ class ValidationRuleParser
         // The format for specifying validation rules and parameters follows an
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
-        if (str_contains($rule, ':')) {
+        if (strpos($rule, ':') !== false) {
             [$rule, $parameter] = explode(':', $rule, 2);
 
             $parameters = static::parseParameters($rule, $parameter);
@@ -298,11 +298,14 @@ class ValidationRuleParser
      */
     protected static function normalizeRule($rule)
     {
-        return match ($rule) {
-            'Int' => 'Integer',
-            'Bool' => 'Boolean',
-            default => $rule,
-        };
+        switch ($rule) {
+            case 'Int':
+                return 'Integer';
+            case 'Bool':
+                return 'Boolean';
+            default:
+                return $rule;
+        }
     }
 
     /**

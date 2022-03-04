@@ -207,7 +207,7 @@ class SessionManager extends Manager
             $handler,
             $this->container['encrypter'],
             $id = null,
-            $this->config->get('session.serialization', 'php'),
+            $this->config->get('session.serialization', 'php')
         );
     }
 

@@ -129,7 +129,7 @@ trait Matching
                 $missing->toArray(),
                 sprintf(
                     'Property [%s] does not contain a value that passes the truth test within the given closure.',
-                    $key,
+                    $key
                 )
             );
         } else {

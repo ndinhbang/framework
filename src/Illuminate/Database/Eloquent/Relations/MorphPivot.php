@@ -139,7 +139,7 @@ class MorphPivot extends Pivot
             return $this->newQueryForCollectionRestoration($ids);
         }
 
-        if (! str_contains($ids, ':')) {
+        if (strpos($ids, ':') === false) {
             return parent::newQueryForRestoration($ids);
         }
 
@@ -161,7 +161,7 @@ class MorphPivot extends Pivot
     {
         $ids = array_values($ids);
 
-        if (! str_contains($ids[0], ':')) {
+        if (strpos($ids[0], ':') === false) {
             return parent::newQueryForRestoration($ids);
         }
 

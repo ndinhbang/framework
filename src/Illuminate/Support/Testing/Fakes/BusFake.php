@@ -422,7 +422,7 @@ class BusFake implements QueueingDispatcher
     public function assertBatchCount($count)
     {
         PHPUnit::assertCount(
-            $count, $this->batches,
+            $count, $this->batches
         );
     }
 

@@ -137,7 +137,7 @@ class Response implements ArrayAccess
      */
     public function effectiveUri()
     {
-        return $this->transferStats?->getEffectiveUri();
+        return ($transferStats = $this->transferStats) ? $transferStats->getEffectiveUri() : null;
     }
 
     /**
@@ -252,7 +252,7 @@ class Response implements ArrayAccess
      */
     public function handlerStats()
     {
-        return $this->transferStats?->getHandlerStats() ?? [];
+        return (($transferStats = $this->transferStats) ? $transferStats->getHandlerStats() : null) ?? [];
     }
 
     /**
@@ -342,7 +342,8 @@ class Response implements ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->json()[$offset];
     }

@@ -966,10 +966,12 @@ class PendingRequest
                 $promise = $handler($request, $options);
 
                 return $promise->then(function ($response) use ($request, $options) {
-                    $this->factory?->recordRequestResponsePair(
-                        (new Request($request))->withData($options['laravel_data']),
-                        new Response($response)
-                    );
+                    ($factory = $this->factory) 
+                        ? $factory->recordRequestResponsePair(
+                            (new Request($request))->withData($options['laravel_data']),
+                            new Response($response)
+                        )
+                        : null;
 
                     return $response;
                 });
@@ -1106,7 +1108,7 @@ class PendingRequest
      */
     protected function dispatchRequestSendingEvent()
     {
-        if ($dispatcher = $this->factory?->getDispatcher()) {
+        if ($dispatcher = ($factory = $this->factory) ? $factory->getDispatcher() : null) {
             $dispatcher->dispatch(new RequestSending($this->request));
         }
     }
@@ -1119,7 +1121,7 @@ class PendingRequest
      */
     protected function dispatchResponseReceivedEvent(Response $response)
     {
-        if (! ($dispatcher = $this->factory?->getDispatcher()) ||
+        if (! ($dispatcher = ($factory = $this->factory) ? $factory->getDispatcher() : null) ||
             ! $this->request) {
             return;
         }
@@ -1134,7 +1136,7 @@ class PendingRequest
      */
     protected function dispatchConnectionFailedEvent()
     {
-        if ($dispatcher = $this->factory?->getDispatcher()) {
+        if ($dispatcher = ($factory = $this->factory) ? $factory->getDispatcher() : null) {
             $dispatcher->dispatch(new ConnectionFailed($this->request));
         }
     }

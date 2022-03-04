@@ -121,7 +121,7 @@ class EventListCommand extends Command
         }
 
         return collect($events)->filter(function ($listeners, $event) use ($eventName) {
-            return str_contains($event, $eventName);
+            return strpos($event, $eventName) !== false;
         })->toArray();
     }
 

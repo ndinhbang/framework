@@ -334,12 +334,16 @@ class Handler implements ExceptionHandlerContract
             return $response;
         }
 
-        return match (true) {
-            $e instanceof HttpResponseException => $e->getResponse(),
-            $e instanceof AuthenticationException => $this->unauthenticated($request, $e),
-            $e instanceof ValidationException => $this->convertValidationExceptionToResponse($e, $request),
-            default => $this->renderExceptionResponse($request, $e),
-        };
+        switch (true) {
+            case $e instanceof HttpResponseException:
+                return $e->getResponse();
+            case $e instanceof AuthenticationException:
+                return $this->unauthenticated($request, $e);
+            case $e instanceof ValidationException:
+                return $this->convertValidationExceptionToResponse($e, $request);
+            default:
+                return $this->renderExceptionResponse($request, $e);
+        }
     }
 
     /**
@@ -350,15 +354,22 @@ class Handler implements ExceptionHandlerContract
      */
     protected function prepareException(Throwable $e)
     {
-        return match (true) {
-            $e instanceof BackedEnumCaseNotFoundException => new NotFoundHttpException($e->getMessage(), $e),
-            $e instanceof ModelNotFoundException => new NotFoundHttpException($e->getMessage(), $e),
-            $e instanceof AuthorizationException => new AccessDeniedHttpException($e->getMessage(), $e),
-            $e instanceof TokenMismatchException => new HttpException(419, $e->getMessage(), $e),
-            $e instanceof SuspiciousOperationException => new NotFoundHttpException('Bad hostname provided.', $e),
-            $e instanceof RecordsNotFoundException => new NotFoundHttpException('Not found.', $e),
-            default => $e,
-        };
+        switch (true) {
+            case $e instanceof BackedEnumCaseNotFoundException:
+                return new NotFoundHttpException($e->getMessage(), $e);
+            case $e instanceof ModelNotFoundException:
+                return new NotFoundHttpException($e->getMessage(), $e);
+            case $e instanceof AuthorizationException:
+                return new AccessDeniedHttpException($e->getMessage(), $e);
+            case $e instanceof TokenMismatchException:
+                return new HttpException(419, $e->getMessage(), $e);
+            case $e instanceof SuspiciousOperationException:
+                return new NotFoundHttpException('Bad hostname provided.', $e);
+            case $e instanceof RecordsNotFoundException:
+                return new NotFoundHttpException('Not found.', $e);
+            default:
+                return $e;
+        }
     }
 
     /**

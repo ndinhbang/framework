@@ -70,7 +70,7 @@ class CookieSessionHandler implements SessionHandlerInterface
      *
      * @return string|false
      */
-    public function read($sessionId): string|false
+    public function read($sessionId)
     {
         $value = $this->request->cookies->get($sessionId) ?: '';
 

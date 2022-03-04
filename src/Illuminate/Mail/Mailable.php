@@ -963,7 +963,7 @@ class Mailable implements MailableContract, Renderable
         [$html, $text] = $this->renderForAssertions();
 
         PHPUnit::assertTrue(
-            str_contains($html, $string),
+            strpos($html, $string) !== false,
             "Did not see expected text [{$string}] within email body."
         );
 
@@ -981,7 +981,7 @@ class Mailable implements MailableContract, Renderable
         [$html, $text] = $this->renderForAssertions();
 
         PHPUnit::assertFalse(
-            str_contains($html, $string),
+            strpos($html, $string) !== false,
             "Saw unexpected text [{$string}] within email body."
         );
 
@@ -1014,7 +1014,7 @@ class Mailable implements MailableContract, Renderable
         [$html, $text] = $this->renderForAssertions();
 
         PHPUnit::assertTrue(
-            str_contains($text, $string),
+            strpos($text, $string) !== false,
             "Did not see expected text [{$string}] within text email body."
         );
 
@@ -1032,7 +1032,7 @@ class Mailable implements MailableContract, Renderable
         [$html, $text] = $this->renderForAssertions();
 
         PHPUnit::assertFalse(
-            str_contains($text, $string),
+            strpos($text, $string) !== false,
             "Saw unexpected text [{$string}] within text email body."
         );
 
@@ -1142,7 +1142,7 @@ class Mailable implements MailableContract, Renderable
             return $this->macroCall($method, $parameters);
         }
 
-        if (str_starts_with($method, 'with')) {
+        if (strncmp($method, 'with', strlen('with')) === 0) {
             return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
         }
 

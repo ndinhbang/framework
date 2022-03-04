@@ -138,7 +138,7 @@ class MonitorCommand extends Command
                 new QueueBusy(
                     $queue['connection'],
                     $queue['queue'],
-                    $queue['size'],
+                    $queue['size']
                 )
             );
         }

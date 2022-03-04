@@ -1293,7 +1293,7 @@ class Grammar extends BaseGrammar
             })
             ->join('.');
 
-        return "'$".(str_starts_with($jsonPath, '[') ? '' : '.').$jsonPath."'";
+        return "'$".(strncmp($jsonPath, '[', strlen('[')) === 0 ? '' : '.').$jsonPath."'";
     }
 
     /**

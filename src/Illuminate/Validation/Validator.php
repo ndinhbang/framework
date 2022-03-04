@@ -1148,7 +1148,7 @@ class Validator implements ValidatorContract
             $this->implicitAttributes = array_merge($response->implicitAttributes, $this->implicitAttributes);
 
             foreach ($response->rules as $ruleKey => $ruleValue) {
-                if ($callback($payload, $this->dataForSometimesIteration($ruleKey, ! str_ends_with($key, '.*')))) {
+                if ($callback($payload, $this->dataForSometimesIteration($ruleKey, substr_compare($key, '.*', -strlen('.*')) !== 0))) {
                     $this->addRules([$ruleKey => $ruleValue]);
                 }
             }

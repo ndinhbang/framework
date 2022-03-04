@@ -284,7 +284,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return true;
         } catch (DynamoDbException $e) {
-            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (strpos($e->getMessage(), 'ConditionalCheckFailed') !== false) {
                 return false;
             }
 
@@ -329,7 +329,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return (int) $response['Attributes'][$this->valueAttribute]['N'];
         } catch (DynamoDbException $e) {
-            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (strpos($e->getMessage(), 'ConditionalCheckFailed') !== false) {
                 return false;
             }
 
@@ -374,7 +374,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return (int) $response['Attributes'][$this->valueAttribute]['N'];
         } catch (DynamoDbException $e) {
-            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (strpos($e->getMessage(), 'ConditionalCheckFailed') !== false) {
                 return false;
             }
 

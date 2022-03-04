@@ -35,7 +35,7 @@ class ValidationData
 
         $data = static::extractDataFromPath($explicitPath, $masterData);
 
-        if (! str_contains($attribute, '*') || str_ends_with($attribute, '*')) {
+        if (strpos($attribute, '*') === false || substr_compare($attribute, '*', -strlen('*')) === 0) {
             return $data;
         }
 

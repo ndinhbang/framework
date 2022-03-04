@@ -92,7 +92,7 @@ class CallQueuedHandler
      */
     protected function getCommand(array $data)
     {
-        if (str_starts_with($data['command'], 'O:')) {
+        if (strncmp($data['command'], 'O:', strlen('O:')) === 0) {
             return unserialize($data['command']);
         }
 

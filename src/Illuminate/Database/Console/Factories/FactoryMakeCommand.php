@@ -121,7 +121,7 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function guessModelName($name)
     {
-        if (str_ends_with($name, 'Factory')) {
+        if (substr_compare($name, 'Factory', -strlen('Factory')) === 0) {
             $name = substr($name, 0, -7);
         }
 

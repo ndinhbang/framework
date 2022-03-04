@@ -145,7 +145,7 @@ abstract class Grammar
      */
     protected function isJsonSelector($value)
     {
-        return str_contains($value, '->');
+        return strpos($value, '->') !== false;
     }
 
     /**

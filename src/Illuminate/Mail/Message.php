@@ -220,7 +220,7 @@ class Message
         if (is_array($address)) {
             $type = lcfirst($type);
 
-            $addresses = collect($address)->map(function (string|array $address, $key) {
+            $addresses = collect($address)->map(function ($address, $key) {
                 if (is_string($key) && is_string($address)) {
                     return new Address($key, $address);
                 }
@@ -251,7 +251,7 @@ class Message
     {
         $this->message->getHeaders()->addTextHeader(
             $header,
-            implode(', ', array_map(fn ($a) => $a->toString(), $addresses)),
+            implode(', ', array_map(fn ($a) => $a->toString(), $addresses))
         );
 
         return $this;

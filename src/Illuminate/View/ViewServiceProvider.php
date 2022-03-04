@@ -88,7 +88,7 @@ class ViewServiceProvider extends ServiceProvider
             return tap(new BladeCompiler(
                 $app['files'],
                 $app['config']['view.compiled'],
-                $app['config']->get('view.relative_hash', false) ? $app->basePath() : '',
+                $app['config']->get('view.relative_hash', false) ? $app->basePath() : ''
             ), function ($blade) {
                 $blade->component('dynamic-component', DynamicComponent::class);
             });

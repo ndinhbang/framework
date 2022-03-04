@@ -107,7 +107,7 @@ class EloquentUserProvider implements UserProvider
     {
         if (empty($credentials) ||
            (count($credentials) === 1 &&
-            str_contains($this->firstCredentialKey($credentials), 'password'))) {
+            strpos($this->firstCredentialKey($credentials), 'password') !== false)) {
             return;
         }
 
@@ -117,7 +117,7 @@ class EloquentUserProvider implements UserProvider
         $query = $this->newModelQuery();
 
         foreach ($credentials as $key => $value) {
-            if (str_contains($key, 'password')) {
+            if (strpos($key, 'password') !== false) {
                 continue;
             }
 
@@ -180,7 +180,7 @@ class EloquentUserProvider implements UserProvider
     {
         $class = '\\'.ltrim($this->model, '\\');
 
-        return new $class;
+        return new $class();
     }
 
     /**

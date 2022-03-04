@@ -70,7 +70,7 @@ class FileSessionHandler implements SessionHandlerInterface
      *
      * @return string|false
      */
-    public function read($sessionId): string|false
+    public function read($sessionId)
     {
         if ($this->files->isFile($path = $this->path.'/'.$sessionId) &&
             $this->files->lastModified($path) >= Carbon::now()->subMinutes($this->minutes)->getTimestamp()) {

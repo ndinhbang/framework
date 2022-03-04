@@ -111,7 +111,7 @@ abstract class AbstractCursorPaginator implements Htmlable
         }
 
         return $this->path()
-            .(str_contains($this->path(), '?') ? '&' : '?')
+            .(strpos($this->path(), '?') !== false ? '&' : '?')
             .Arr::query($parameters)
             .$this->buildFragment();
     }
@@ -601,7 +601,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $key
      * @return mixed
      */
-    public function offsetGet($key): mixed
+    public function offsetGet($key)
     {
         return $this->items->get($key);
     }

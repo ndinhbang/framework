@@ -423,7 +423,7 @@ class Blueprint
     public function dropForeignIdFor($model, $column = null)
     {
         if (is_string($model)) {
-            $model = new $model;
+            $model = new $model();
         }
 
         return $this->dropForeign([$column ?: $model->getForeignKey()]);
@@ -439,7 +439,7 @@ class Blueprint
     public function dropConstrainedForeignIdFor($model, $column = null)
     {
         if (is_string($model)) {
-            $model = new $model;
+            $model = new $model();
         }
 
         return $this->dropConstrainedForeignId($column ?: $model->getForeignKey());
@@ -928,7 +928,7 @@ class Blueprint
     public function foreignIdFor($model, $column = null)
     {
         if (is_string($model)) {
-            $model = new $model;
+            $model = new $model();
         }
 
         return $model->getKeyType() === 'int' && $model->getIncrementing()

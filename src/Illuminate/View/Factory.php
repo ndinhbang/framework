@@ -230,7 +230,7 @@ class Factory implements FactoryContract
         // view. Alternatively, the "empty view" could be a raw string that begins
         // with "raw|" for convenience and to let this know that it is a string.
         else {
-            $result = str_starts_with($empty, 'raw|')
+            $result = strncmp($empty, 'raw|', strlen('raw|')) === 0
                         ? substr($empty, 4)
                         : $this->make($empty)->render();
         }
@@ -320,7 +320,7 @@ class Factory implements FactoryContract
         $extensions = array_keys($this->extensions);
 
         return Arr::first($extensions, function ($value) use ($path) {
-            return str_ends_with($path, '.'.$value);
+            return substr_compare($path, '.'.$value, -strlen('.'.$value)) === 0;
         });
     }
 

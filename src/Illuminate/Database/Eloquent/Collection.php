@@ -196,7 +196,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
             $segments = explode('.', explode(':', $key)[0]);
 
-            if (str_contains($key, ':')) {
+            if (strpos($key, ':') !== false) {
                 $segments[count($segments) - 1] .= ':'.explode(':', $key)[1];
             }
 

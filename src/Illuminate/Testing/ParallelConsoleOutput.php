@@ -35,7 +35,7 @@ class ParallelConsoleOutput extends ConsoleOutput
         parent::__construct(
             $output->getVerbosity(),
             $output->isDecorated(),
-            $output->getFormatter(),
+            $output->getFormatter()
         );
 
         $this->output = $output;

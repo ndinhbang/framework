@@ -164,11 +164,11 @@ class BelongsToMany extends Relation
      */
     protected function resolveTableName($table)
     {
-        if (! str_contains($table, '\\') || ! class_exists($table)) {
+        if (strpos($table, '\\') === false || ! class_exists($table)) {
             return $table;
         }
 
-        $model = new $table;
+        $model = new $table();
 
         if (! $model instanceof Model) {
             return $table;
@@ -1059,7 +1059,7 @@ class BelongsToMany extends Relation
             // To get the pivots attributes we will just take any of the attributes which
             // begin with "pivot_" and add those to this arrays, as well as unsetting
             // them from the parent's models since they exist in a different table.
-            if (str_starts_with($key, 'pivot_')) {
+            if (strncmp($key, 'pivot_', strlen('pivot_')) === 0) {
                 $values[substr($key, 6)] = $value;
 
                 unset($model->$key);
@@ -1445,7 +1445,7 @@ class BelongsToMany extends Relation
      */
     public function qualifyPivotColumn($column)
     {
-        return str_contains($column, '.')
+        return strpos($column, '.') !== false
                     ? $column
                     : $this->table.'.'.$column;
     }

@@ -38,7 +38,7 @@ class PostgresGrammar extends Grammar
      */
     protected function whereBasic(Builder $query, $where)
     {
-        if (str_contains(strtolower($where['operator']), 'like')) {
+        if (strpos(strtolower($where['operator']), 'like') !== false) {
             return sprintf(
                 '%s::text %s %s',
                 $this->wrap($where['column']),

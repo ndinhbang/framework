@@ -217,7 +217,7 @@ class Str
         }
 
         foreach ((array) $needles as $needle) {
-            if ($needle !== '' && str_contains($haystack, $needle)) {
+            if ($needle !== '' && strpos($haystack, $needle) !== false) {
                 return true;
             }
         }
@@ -261,7 +261,7 @@ class Str
         foreach ((array) $needles as $needle) {
             if (
                 $needle !== '' && $needle !== null
-                && str_ends_with($haystack, $needle)
+                && substr_compare($haystack, $needle, -strlen($needle)) === 0
             ) {
                 return true;
             }
@@ -293,14 +293,14 @@ class Str
 
         $start = str(mb_substr($start, max(mb_strlen($start, 'UTF-8') - $radius, 0), $radius, 'UTF-8'))->ltrim()->unless(
             fn ($startWithRadius) => $startWithRadius->exactly($start),
-            fn ($startWithRadius) => $startWithRadius->prepend($omission),
+            fn ($startWithRadius) => $startWithRadius->prepend($omission)
         );
 
         $end = rtrim($matches[3]);
 
         $end = str(mb_substr($end, 0, $radius, 'UTF-8'))->rtrim()->unless(
             fn ($endWithRadius) => $endWithRadius->exactly($end),
-            fn ($endWithRadius) => $endWithRadius->append($omission),
+            fn ($endWithRadius) => $endWithRadius->append($omission)
         );
 
         return $start->append($matches[2], $end)->toString();
@@ -895,7 +895,7 @@ class Str
     public static function startsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ((string) $needle !== '' && str_starts_with($haystack, $needle)) {
+            if ((string) $needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0) {
                 return true;
             }
         }

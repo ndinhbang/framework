@@ -48,7 +48,7 @@ trait ManagesTransactions
                 $this->transactions = max(0, $this->transactions - 1);
 
                 if ($this->transactions == 0) {
-                    $this->transactionsManager?->commit($this->getName());
+                    ($transactionsManager = $this->transactionsManager) ? $transactionsManager->commit($this->getName()) : null;
                 }
             } catch (Throwable $e) {
                 $this->handleCommitTransactionException(
@@ -83,9 +83,7 @@ trait ManagesTransactions
             $this->transactions > 1) {
             $this->transactions--;
 
-            $this->transactionsManager?->rollback(
-                $this->getName(), $this->transactions
-            );
+            ($transactionsManager = $this->transactionsManager) ? $transactionsManager->rollback($this->getName(), $this->transactions) : null;
 
             throw $e;
         }
@@ -116,9 +114,7 @@ trait ManagesTransactions
 
         $this->transactions++;
 
-        $this->transactionsManager?->begin(
-            $this->getName(), $this->transactions
-        );
+        ($transactionsManager = $this->transactionsManager) ? $transactionsManager->begin($this->getName(), $this->transactions) : null;
 
         $this->fireConnectionEvent('beganTransaction');
     }
@@ -194,7 +190,7 @@ trait ManagesTransactions
         $this->transactions = max(0, $this->transactions - 1);
 
         if ($this->transactions == 0) {
-            $this->transactionsManager?->commit($this->getName());
+            ($transactionsManager = $this->transactionsManager) ? $transactionsManager->commit($this->getName()) : null;
         }
 
         $this->fireConnectionEvent('committed');
@@ -258,9 +254,7 @@ trait ManagesTransactions
 
         $this->transactions = $toLevel;
 
-        $this->transactionsManager?->rollback(
-            $this->getName(), $this->transactions
-        );
+        ($transactionsManager = $this->transactionsManager) ? $transactionsManager->rollback($this->getName(), $this->transactions) : null;
 
         $this->fireConnectionEvent('rollingBack');
     }
@@ -297,9 +291,7 @@ trait ManagesTransactions
         if ($this->causedByLostConnection($e)) {
             $this->transactions = 0;
 
-            $this->transactionsManager?->rollback(
-                $this->getName(), $this->transactions
-            );
+            ($transactionsManager = $this->transactionsManager) ? $transactionsManager->rollback($this->getName(), $this->transactions) : null;
         }
 
         throw $e;

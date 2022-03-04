@@ -110,9 +110,10 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Get the value for a given offset.
      *
      * @param  TKey  $offset
-     * @return TValue|null
+     * @return mixed
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->get($offset);
     }

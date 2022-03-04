@@ -668,7 +668,7 @@ class Builder implements BuilderContract
             // For nested eager loads we'll skip loading them here and they will be set as an
             // eager load on the query to retrieve the relation so that they will be eager
             // loaded on that query, because that is where they get hydrated as models.
-            if (! str_contains($name, '.')) {
+            if (strpos($name, '.') === false) {
                 $models = $this->eagerLoadRelation($models, $name, $constraints);
             }
         }
@@ -766,7 +766,7 @@ class Builder implements BuilderContract
      */
     protected function isNestedUnder($relation, $name)
     {
-        return str_contains($name, '.') && str_starts_with($name, $relation.'.');
+        return strpos($name, '.') !== false && strncmp($name, $relation.'.', strlen($relation.'.')) === 0;
     }
 
     /**
@@ -1391,7 +1391,7 @@ class Builder implements BuilderContract
             if (is_numeric($name)) {
                 $name = $constraints;
 
-                [$name, $constraints] = str_contains($name, ':')
+                [$name, $constraints] = strpos($name, ':') !== false
                             ? $this->createSelectWithConstraint($name)
                             : [$name, static function () {
                                 //
@@ -1419,7 +1419,7 @@ class Builder implements BuilderContract
     {
         return [explode(':', $name)[0], static function ($query) use ($name) {
             $query->select(array_map(static function ($column) use ($query) {
-                if (str_contains($column, '.')) {
+                if (strpos($column, '.') !== false) {
                     return $column;
                 }
 

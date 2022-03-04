@@ -35,7 +35,7 @@ class RelationNotFoundException extends RuntimeException
         $instance = new static(
             is_null($type)
                 ? "Call to undefined relationship [{$relation}] on model [{$class}]."
-                : "Call to undefined relationship [{$relation}] on model [{$class}] of type [{$type}].",
+                : "Call to undefined relationship [{$relation}] on model [{$class}] of type [{$type}]."
         );
 
         $instance->model = $class;

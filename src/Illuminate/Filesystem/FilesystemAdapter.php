@@ -633,7 +633,7 @@ class FilesystemAdapter implements CloudFilesystemContract
         // If the path contains "storage/public", it probably means the developer is using
         // the default disk to generate the path instead of the "public" disk like they
         // are really supposed to use. We will remove the public from this path here.
-        if (str_contains($path, '/storage/public/')) {
+        if (strpos($path, '/storage/public/') !== false) {
             return Str::replaceFirst('/public/', '/', $path);
         }
 
@@ -836,11 +836,14 @@ class FilesystemAdapter implements CloudFilesystemContract
             return;
         }
 
-        return match ($visibility) {
-            FilesystemContract::VISIBILITY_PUBLIC => Visibility::PUBLIC,
-            FilesystemContract::VISIBILITY_PRIVATE => Visibility::PRIVATE,
-            default => throw new InvalidArgumentException("Unknown visibility: {$visibility}."),
-        };
+        switch ($visibility) {
+            case FilesystemContract::VISIBILITY_PUBLIC:
+                return Visibility::PUBLIC;
+            case FilesystemContract::VISIBILITY_PRIVATE:
+                return Visibility::PRIVATE;
+            default:
+                throw new InvalidArgumentException("Unknown visibility: {$visibility}.");
+        }
     }
 
     /**

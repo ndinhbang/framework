@@ -111,7 +111,7 @@ class DatabaseUserProvider implements UserProvider
         $query = $this->connection->table($this->table);
 
         foreach ($credentials as $key => $value) {
-            if (str_contains($key, 'password')) {
+            if (strpos($key, 'password') !== false) {
                 continue;
             }
 

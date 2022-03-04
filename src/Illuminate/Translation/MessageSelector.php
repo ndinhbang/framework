@@ -66,7 +66,7 @@ class MessageSelector
 
         $value = $matches[2];
 
-        if (str_contains($condition, ',')) {
+        if (strpos($condition, ',') !== false) {
             [$from, $to] = explode(',', $condition, 2);
 
             if ($to === '*' && $number >= $from) {

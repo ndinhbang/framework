@@ -65,7 +65,7 @@ class EnvironmentDetector
                 return $args[$i + 1] ?? null;
             }
 
-            if (str_starts_with($value, '--env')) {
+            if (strncmp($value, '--env', strlen('--env')) === 0) {
                 return head(array_slice(explode('=', $value), 1));
             }
         }

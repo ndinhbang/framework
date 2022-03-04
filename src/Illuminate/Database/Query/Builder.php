@@ -385,7 +385,7 @@ class Builder implements BuilderContract
             $this->getConnection()->getDatabaseName()) {
             $databaseName = $query->getConnection()->getDatabaseName();
 
-            if (! str_starts_with($query->from, $databaseName) && ! str_contains($query->from, '.')) {
+            if (strncmp($query->from, $databaseName, strlen($databaseName)) !== 0 && strpos($query->from, '.') === false) {
                 $query->from($databaseName.'.'.$query->from);
             }
         }
@@ -759,7 +759,7 @@ class Builder implements BuilderContract
         // If the column is making a JSON reference we'll check to see if the value
         // is a boolean. If it is, we'll add the raw boolean string as an actual
         // value to the query to ensure this is properly handled by the query.
-        if (str_contains($column, '->') && is_bool($value)) {
+        if (strpos($column, '->') !== false && is_bool($value)) {
             $value = new Expression($value ? 'true' : 'false');
 
             if (is_string($column)) {
@@ -2778,7 +2778,7 @@ class Builder implements BuilderContract
             return $column;
         }
 
-        $separator = str_contains(strtolower($column), ' as ') ? ' as ' : '\.';
+        $separator = strpos(strtolower($column), ' as ') !== false ? ' as ' : '\.';
 
         return last(preg_split('~'.$separator.'~i', $column));
     }
@@ -3014,7 +3014,7 @@ class Builder implements BuilderContract
         // If the result doesn't contain a decimal place, we will assume it is an int then
         // cast it to one. When it does we will cast it to a float since it needs to be
         // cast to the expected data type for the developers out of pure convenience.
-        return ! str_contains((string) $result, '.')
+        return strpos((string) $result, '.') === false
                 ? (int) $result : (float) $result;
     }
 
@@ -3445,7 +3445,7 @@ class Builder implements BuilderContract
         if (is_array($value)) {
             $this->bindings[$type] = array_values(array_map(
                 [$this, 'castBinding'],
-                array_merge($this->bindings[$type], $value),
+                array_merge($this->bindings[$type], $value)
             ));
         } else {
             $this->bindings[$type][] = $this->castBinding($value);
@@ -3653,7 +3653,7 @@ class Builder implements BuilderContract
             return $this->macroCall($method, $parameters);
         }
 
-        if (str_starts_with($method, 'where')) {
+        if (strncmp($method, 'where', strlen('where')) === 0) {
             return $this->dynamicWhere($method, $parameters);
         }
 

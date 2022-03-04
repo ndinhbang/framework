@@ -275,7 +275,7 @@ trait CanBeOneOfMany
      */
     protected function qualifyRelatedColumn($column)
     {
-        return str_contains($column, '.') ? $column : $this->query->getModel()->getTable().'.'.$column;
+        return strpos($column, '.') !== false ? $column : $this->query->getModel()->getTable().'.'.$column;
     }
 
     /**

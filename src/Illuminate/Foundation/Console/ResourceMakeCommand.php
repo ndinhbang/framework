@@ -71,7 +71,7 @@ class ResourceMakeCommand extends GeneratorCommand
     protected function collection()
     {
         return $this->option('collection') ||
-               str_ends_with($this->argument('name'), 'Collection');
+               substr_compare($this->argument('name'), 'Collection', -strlen('Collection')) === 0;
     }
 
     /**

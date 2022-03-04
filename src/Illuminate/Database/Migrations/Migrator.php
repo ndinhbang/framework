@@ -485,7 +485,7 @@ class Migrator
     {
         $class = $this->getMigrationClass($file);
 
-        return new $class;
+        return new $class();
     }
 
     /**
@@ -499,12 +499,12 @@ class Migrator
         $class = $this->getMigrationClass($this->getMigrationName($path));
 
         if (class_exists($class) && realpath($path) == (new ReflectionClass($class))->getFileName()) {
-            return new $class;
+            return new $class();
         }
 
         $migration = $this->files->getRequire($path);
 
-        return is_object($migration) ? $migration : new $class;
+        return is_object($migration) ? $migration : new $class();
     }
 
     /**
@@ -527,7 +527,7 @@ class Migrator
     public function getMigrationFiles($paths)
     {
         return Collection::make($paths)->flatMap(function ($path) {
-            return str_ends_with($path, '.php') ? [$path] : $this->files->glob($path.'/*_*.php');
+            return substr_compare($path, '.php', -strlen('.php')) === 0 ? [$path] : $this->files->glob($path.'/*_*.php');
         })->filter()->values()->keyBy(function ($file) {
             return $this->getMigrationName($file);
         })->sortBy(function ($file, $key) {

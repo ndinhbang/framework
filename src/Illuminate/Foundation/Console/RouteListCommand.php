@@ -220,7 +220,7 @@ class RouteListCommand extends Command
             $path = (new ReflectionFunction($route->action['uses']))
                                 ->getFileName();
         } elseif (is_string($route->action['uses']) &&
-                  str_contains($route->action['uses'], 'SerializableClosure')) {
+                  strpos($route->action['uses'], 'SerializableClosure') !== false) {
             return false;
         } elseif (is_string($route->action['uses'])) {
             $path = (new ReflectionClass(explode('@', $route->action['uses'])[0]))
@@ -229,7 +229,7 @@ class RouteListCommand extends Command
             return false;
         }
 
-        return str_starts_with($path, base_path('vendor'));
+        return strncmp($path, base_path('vendor'), strlen(base_path('vendor'))) === 0;
     }
 
     /**
@@ -250,7 +250,7 @@ class RouteListCommand extends Command
 
         if ($this->option('except-path')) {
             foreach (explode(',', $this->option('except-path')) as $path) {
-                if (str_contains($route['uri'], $path)) {
+                if (strpos($route['uri'], $path) !== false) {
                     return;
                 }
             }
@@ -290,7 +290,7 @@ class RouteListCommand extends Command
         $results = [];
 
         foreach ($columns as $column) {
-            if (str_contains($column, ',')) {
+            if (strpos($column, ',') !== false) {
                 $results = array_merge($results, explode(',', $column));
             } else {
                 $results[] = $column;
@@ -331,7 +331,7 @@ class RouteListCommand extends Command
                 'action' => $this->formatActionForCli($route),
                 'method' => $route['method'] == 'GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS' ? 'ANY' : $route['method'],
                 'uri' => $route['domain'] ? ($route['domain'].'/'.ltrim($route['uri'], '/')) : $route['uri'],
-            ]),
+            ])
         );
 
         $maxMethod = mb_strlen($routes->max('method'));
@@ -366,7 +366,7 @@ class RouteListCommand extends Command
             }
 
             $method = Str::of($method)->explode('|')->map(
-                fn ($method) => sprintf('<fg=%s>%s</>', $this->verbColors[$method] ?? 'default', $method),
+                fn ($method) => sprintf('<fg=%s>%s</>', $this->verbColors[$method] ?? 'default', $method)
             )->implode('<fg=#6C7280>|</>');
 
             return [sprintf(
@@ -375,7 +375,7 @@ class RouteListCommand extends Command
                 $spaces,
                 preg_replace('#({[^}]+})#', '<fg=yellow>$1</>', $uri),
                 $dots,
-                str_replace('   ', ' › ', $action),
+                str_replace('   ', ' › ', $action)
             ), $this->output->isVerbose() && ! empty($middleware) ? "<fg=#6C7280>$middleware</>" : null];
         })->flatten()->filter()->prepend('')->push('')->toArray();
     }
@@ -399,13 +399,13 @@ class RouteListCommand extends Command
         $rootControllerNamespace = $this->laravel[UrlGenerator::class]->getRootControllerNamespace()
             ?? ($this->laravel->getNamespace().'Http\\Controllers');
 
-        if (str_starts_with($action, $rootControllerNamespace)) {
+        if (strncmp($action, $rootControllerNamespace, strlen($rootControllerNamespace)) === 0) {
             return $name.substr($action, mb_strlen($rootControllerNamespace) + 1);
         }
 
         $actionClass = explode('@', $action)[0];
 
-        if (class_exists($actionClass) && str_starts_with((new ReflectionClass($actionClass))->getFilename(), base_path('vendor'))) {
+        if (class_exists($actionClass) && strncmp((new ReflectionClass($actionClass))->getFilename(), base_path('vendor'), strlen(base_path('vendor'))) === 0) {
             $actionCollection = collect(explode('\\', $action));
 
             return $name.$actionCollection->take(2)->implode('\\').'   '.$actionCollection->last();

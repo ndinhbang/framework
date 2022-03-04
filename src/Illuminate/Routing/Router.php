@@ -545,7 +545,7 @@ class Router implements BindingRegistrar, RegistrarContract
     {
         $group = end($this->groupStack);
 
-        return isset($group['namespace']) && ! str_starts_with($class, '\\') && ! str_starts_with($class, $group['namespace'])
+        return isset($group['namespace']) && strncmp($class, '\\', strlen('\\')) !== 0 && strncmp($class, $group['namespace'], strlen($group['namespace'])) !== 0
                 ? $group['namespace'].'\\'.$class : $class;
     }
 
@@ -567,7 +567,7 @@ class Router implements BindingRegistrar, RegistrarContract
             return $class;
         }
 
-        if (str_contains($class, '@')) {
+        if (strpos($class, '@') !== false) {
             return $class;
         }
 

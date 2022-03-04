@@ -217,7 +217,7 @@ class Request implements ArrayAccess
     public function isJson()
     {
         return $this->hasHeader('Content-Type') &&
-               str_contains($this->header('Content-Type')[0], 'json');
+               strpos($this->header('Content-Type')[0], 'json') !== false;
     }
 
     /**
@@ -228,7 +228,7 @@ class Request implements ArrayAccess
     public function isMultipart()
     {
         return $this->hasHeader('Content-Type') &&
-               str_contains($this->header('Content-Type')[0], 'multipart');
+               strpos($this->header('Content-Type')[0], 'multipart') !== false;
     }
 
     /**
@@ -271,7 +271,8 @@ class Request implements ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->data()[$offset];
     }

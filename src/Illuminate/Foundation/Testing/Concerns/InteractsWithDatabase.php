@@ -207,7 +207,7 @@ trait InteractsWithDatabase
      */
     protected function getTable($table)
     {
-        return $this->newModelFor($table)?->getTable() ?: $table;
+        return (($newModelFor = $this->newModelFor($table)) ? $newModelFor->getTable() : null) ?: $table;
     }
 
     /**
@@ -218,7 +218,7 @@ trait InteractsWithDatabase
      */
     protected function getTableConnection($table)
     {
-        return $this->newModelFor($table)?->getConnectionName();
+        return ($newModelFor = $this->newModelFor($table)) ? $newModelFor->getConnectionName() : null;
     }
 
     /**
