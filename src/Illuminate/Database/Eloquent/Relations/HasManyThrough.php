@@ -508,9 +508,9 @@ class HasManyThrough extends Relation
      */
     public function chunkById($count, callable $callback, $column = null, $alias = null)
     {
-        $column ??= $this->getRelated()->getQualifiedKeyName();
+        $column = $column ?? $this->getRelated()->getQualifiedKeyName();
 
-        $alias ??= $this->getRelated()->getKeyName();
+        $alias = $alias ?? $this->getRelated()->getKeyName();
 
         return $this->prepareQueryBuilder()->chunkById($count, $callback, $column, $alias);
     }
@@ -564,9 +564,9 @@ class HasManyThrough extends Relation
      */
     public function lazyById($chunkSize = 1000, $column = null, $alias = null)
     {
-        $column ??= $this->getRelated()->getQualifiedKeyName();
+        $column = $column ?? $this->getRelated()->getQualifiedKeyName();
 
-        $alias ??= $this->getRelated()->getKeyName();
+        $alias = $alias ?? $this->getRelated()->getKeyName();
 
         return $this->prepareQueryBuilder()->lazyById($chunkSize, $column, $alias);
     }

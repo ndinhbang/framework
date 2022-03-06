@@ -66,7 +66,7 @@ class Pluralizer
      */
     public static function plural($value, $count = 2)
     {
-        if (is_countable($count)) {
+        if (is_array($count) || $count instanceof \Countable) {
             $count = count($count);
         }
 

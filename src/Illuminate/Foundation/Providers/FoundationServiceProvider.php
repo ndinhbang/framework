@@ -132,7 +132,9 @@ class FoundationServiceProvider extends AggregateServiceProvider
 
         $this->app->bind(
             MaintenanceModeContract::class,
-            fn () => $this->app->make(MaintenanceModeManager::class)->driver()
+            function () {
+                return $this->app->make(MaintenanceModeManager::class)->driver();
+            }
         );
     }
 }

@@ -333,7 +333,9 @@ trait FormatsMessages
     protected function replacePositionPlaceholder($message, $attribute)
     {
         return $this->replaceIndexOrPositionPlaceholder(
-            $message, $attribute, 'position', fn ($segment) => $segment + 1
+            $message, $attribute, 'position', function ($segment) {
+                return $segment + 1;
+            }
         );
     }
 
@@ -350,7 +352,9 @@ trait FormatsMessages
     {
         $segments = explode('.', $attribute);
 
-        $modifier ??= fn ($value) => $value;
+        $modifier = $modifier ?? function ($value) {
+            return $value;
+        };
 
         $numericIndex = 1;
 

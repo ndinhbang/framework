@@ -77,10 +77,11 @@ class HasInDatabase extends Constraint
     protected function getAdditionalInfo($table)
     {
         $query = $this->database->table($table);
+        reset($this->data);
 
         $similarResults = $query->where(
-            array_key_first($this->data),
-            $this->data[array_key_first($this->data)]
+            key($this->data),
+            $this->data[key($this->data)]
         )->limit($this->show)->get();
 
         if ($similarResults->isNotEmpty()) {

@@ -22,7 +22,7 @@ trait ManagesLoops
      */
     public function addLoop($data)
     {
-        $length = is_countable($data) && ! $data instanceof LazyCollection
+        $length = (is_array($data) || $data instanceof \Countable) && ! $data instanceof LazyCollection
                             ? count($data)
                             : null;
 

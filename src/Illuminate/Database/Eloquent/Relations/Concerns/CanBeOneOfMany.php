@@ -110,8 +110,9 @@ trait CanBeOneOfMany
             if (! isset($previous)) {
                 $this->oneOfManySubQuery = $subQuery;
             }
+            end($columns);
 
-            if (array_key_last($columns) == $column) {
+            if (key($columns) == $column) {
                 $this->addOneOfManyJoinSubQuery($this->query, $subQuery, $column);
             }
 

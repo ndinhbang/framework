@@ -171,9 +171,11 @@ abstract class Seeder
             throw new InvalidArgumentException('Method [run] missing from '.get_class($this));
         }
 
-        $callback = fn () => isset($this->container)
-            ? $this->container->call([$this, 'run'], $parameters)
-            : $this->run(...$parameters);
+        $callback = function () use ($parameters) {
+            return isset($this->container)
+                ? $this->container->call([$this, 'run'], $parameters)
+                : $this->run(...$parameters);
+        };
 
         $uses = array_flip(class_uses_recursive(static::class));
 

@@ -227,9 +227,11 @@ class HandleExceptions
      */
     protected function forwardsTo($method)
     {
-        return fn (...$arguments) => static::$app
-            ? $this->{$method}(...$arguments)
-            : false;
+        return function (...$arguments) {
+            return static::$app
+                ? $this->{$method}(...$arguments)
+                : false;
+        };
     }
 
     /**

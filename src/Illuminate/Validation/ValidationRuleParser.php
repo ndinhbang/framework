@@ -93,11 +93,12 @@ class ValidationRuleParser
         if (is_object($rule)) {
             return Arr::wrap($this->prepareRule($rule, $attribute));
         }
+        reset($rule);
 
         return array_map(
             [$this, 'prepareRule'],
             $rule,
-            array_fill(array_key_first($rule), count($rule), $attribute)
+            array_fill(key($rule), count($rule), $attribute)
         );
     }
 

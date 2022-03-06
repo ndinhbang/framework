@@ -865,7 +865,7 @@ trait ValidatesAttributes
      */
     protected function getUniqueIds($idColumn, $parameters)
     {
-        $idColumn ??= $parameters[3] ?? 'id';
+        $idColumn = $idColumn ?? $parameters[3] ?? 'id';
 
         return [$idColumn, $this->prepareUniqueId($parameters[2])];
     }
@@ -922,7 +922,7 @@ trait ValidatesAttributes
             $model = new $table();
 
             $table = $model->getTable();
-            $connection ??= $model->getConnectionName();
+            $connection = $connection ?? $model->getConnectionName();
 
             if (strpos($table, '.') !== false && Str::startsWith($table, $connection)) {
                 $connection = null;
@@ -1517,7 +1517,7 @@ trait ValidatesAttributes
             return false;
         } elseif (is_string($value) && trim($value) === '') {
             return false;
-        } elseif (is_countable($value) && count($value) < 1) {
+        } elseif ((is_array($value) || $value instanceof \Countable) && count($value) < 1) {
             return false;
         } elseif ($value instanceof File) {
             return (string) $value->getPath() !== '';

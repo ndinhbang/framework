@@ -934,11 +934,11 @@ class BelongsToMany extends Relation
     {
         $this->prepareQueryBuilder();
 
-        $column ??= $this->getRelated()->qualifyColumn(
+        $column = $column ?? $this->getRelated()->qualifyColumn(
             $this->getRelatedKeyName()
         );
 
-        $alias ??= $this->getRelatedKeyName();
+        $alias = $alias ?? $this->getRelatedKeyName();
 
         return $this->query->chunkById($count, function ($results) use ($callback) {
             $this->hydratePivotRelation($results->all());
@@ -990,11 +990,11 @@ class BelongsToMany extends Relation
      */
     public function lazyById($chunkSize = 1000, $column = null, $alias = null)
     {
-        $column ??= $this->getRelated()->qualifyColumn(
+        $column = $column ?? $this->getRelated()->qualifyColumn(
             $this->getRelatedKeyName()
         );
 
-        $alias ??= $this->getRelatedKeyName();
+        $alias = $alias ?? $this->getRelatedKeyName();
 
         return $this->prepareQueryBuilder()->lazyById($chunkSize, $column, $alias)->map(function ($model) {
             $this->hydratePivotRelation([$model]);

@@ -632,7 +632,7 @@ class Stringable implements JsonSerializable
      */
     public function stripTags($allowedTags = null)
     {
-        return new static(strip_tags($this->value, $allowedTags));
+        return new static(strip_tags($this->value, $allowedTags !== null && is_array($allowedTags) ? '<' . implode('><', $allowedTags) . '>' : $allowedTags));
     }
 
     /**

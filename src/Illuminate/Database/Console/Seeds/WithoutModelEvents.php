@@ -14,6 +14,8 @@ trait WithoutModelEvents
      */
     public function withoutModelEvents(callable $callback)
     {
-        return fn () => Model::withoutEvents($callback);
+        return function () use ($callback) {
+            return Model::withoutEvents($callback);
+        };
     }
 }

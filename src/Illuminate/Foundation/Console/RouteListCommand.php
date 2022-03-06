@@ -327,11 +327,13 @@ class RouteListCommand extends Command
     protected function forCli($routes)
     {
         $routes = $routes->map(
-            fn ($route) => array_merge($route, [
-                'action' => $this->formatActionForCli($route),
-                'method' => $route['method'] == 'GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS' ? 'ANY' : $route['method'],
-                'uri' => $route['domain'] ? ($route['domain'].'/'.ltrim($route['uri'], '/')) : $route['uri'],
-            ])
+            function ($route) {
+                return array_merge($route, [
+                    'action' => $this->formatActionForCli($route),
+                    'method' => $route['method'] == 'GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS' ? 'ANY' : $route['method'],
+                    'uri' => $route['domain'] ? ($route['domain'].'/'.ltrim($route['uri'], '/')) : $route['uri'],
+                ]);
+            }
         );
 
         $maxMethod = mb_strlen($routes->max('method'));
@@ -348,9 +350,13 @@ class RouteListCommand extends Command
             ] = $route;
 
             $middleware = Str::of($middleware)->explode("\n")->filter()->whenNotEmpty(
-                fn ($collection) => $collection->map(
-                    fn ($middleware) => sprintf('         %s⇂ %s', str_repeat(' ', $maxMethod), $middleware)
-                )
+                function ($collection) use ($maxMethod) {
+                    return $collection->map(
+                        function ($middleware) use ($maxMethod) {
+                            return sprintf('         %s⇂ %s', str_repeat(' ', $maxMethod), $middleware);
+                        }
+                    );
+                }
             )->implode("\n");
 
             $spaces = str_repeat(' ', max($maxMethod + 6 - mb_strlen($method), 0));
@@ -366,7 +372,9 @@ class RouteListCommand extends Command
             }
 
             $method = Str::of($method)->explode('|')->map(
-                fn ($method) => sprintf('<fg=%s>%s</>', $this->verbColors[$method] ?? 'default', $method)
+                function ($method) {
+                    return sprintf('<fg=%s>%s</>', $this->verbColors[$method] ?? 'default', $method);
+                }
             )->implode('<fg=#6C7280>|</>');
 
             return [sprintf(

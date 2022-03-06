@@ -113,9 +113,9 @@ trait BuildsQueries
      */
     public function chunkById($count, callable $callback, $column = null, $alias = null)
     {
-        $column ??= $this->defaultKeyName();
+        $column = $column ?? $this->defaultKeyName();
 
-        $alias ??= $column;
+        $alias = $alias ?? $column;
 
         $lastId = null;
 
@@ -256,9 +256,9 @@ trait BuildsQueries
             throw new InvalidArgumentException('The chunk size should be at least 1');
         }
 
-        $column ??= $this->defaultKeyName();
+        $column = $column ?? $this->defaultKeyName();
 
-        $alias ??= $column;
+        $alias = $alias ?? $column;
 
         return LazyCollection::make(function () use ($chunkSize, $column, $alias, $descending) {
             $lastId = null;

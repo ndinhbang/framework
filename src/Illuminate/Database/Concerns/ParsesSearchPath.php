@@ -18,7 +18,7 @@ trait ParsesSearchPath
             $searchPath = $matches[0];
         }
 
-        $searchPath ??= [];
+        $searchPath = $searchPath ?? [];
 
         array_walk($searchPath, static function (&$schema) {
             $schema = trim($schema, '\'"');

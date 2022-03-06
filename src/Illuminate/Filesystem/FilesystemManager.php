@@ -128,7 +128,7 @@ class FilesystemManager implements FactoryContract
      */
     protected function resolve($name, $config = null)
     {
-        $config ??= $this->getConfig($name);
+        $config = $config ?? $this->getConfig($name);
 
         if (empty($config['driver'])) {
             throw new InvalidArgumentException("Disk [{$name}] does not have a configured driver.");
@@ -352,7 +352,7 @@ class FilesystemManager implements FactoryContract
      */
     public function purge($name = null)
     {
-        $name ??= $this->getDefaultDriver();
+        $name = $name ?? $this->getDefaultDriver();
 
         unset($this->disks[$name]);
     }

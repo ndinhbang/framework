@@ -292,15 +292,23 @@ class Str
         $start = ltrim($matches[1]);
 
         $start = str(mb_substr($start, max(mb_strlen($start, 'UTF-8') - $radius, 0), $radius, 'UTF-8'))->ltrim()->unless(
-            fn ($startWithRadius) => $startWithRadius->exactly($start),
-            fn ($startWithRadius) => $startWithRadius->prepend($omission)
+            function ($startWithRadius) use ($start) {
+                return $startWithRadius->exactly($start);
+            },
+            function ($startWithRadius) use ($omission) {
+                return $startWithRadius->prepend($omission);
+            }
         );
 
         $end = rtrim($matches[3]);
 
         $end = str(mb_substr($end, 0, $radius, 'UTF-8'))->rtrim()->unless(
-            fn ($endWithRadius) => $endWithRadius->exactly($end),
-            fn ($endWithRadius) => $endWithRadius->append($omission)
+            function ($endWithRadius) use ($end) {
+                return $endWithRadius->exactly($end);
+            },
+            function ($endWithRadius) use ($omission) {
+                return $endWithRadius->append($omission);
+            }
         );
 
         return $start->append($matches[2], $end)->toString();
